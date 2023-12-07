@@ -3,6 +3,12 @@
 A service which consumes policy change events from a message queue / RESTful endpoint and enables them to be published as webhooks for brokers to consume
 
 ## Requirement
+
+- redis setup
+- rabbitmq 
+- mongodb
+
+Sample - Environment variable
 PORT=4000
 DB_URL=mongodb://localhost:27017/isrpolicy
 REDIS_URL=redis://127.0.0.1:6379

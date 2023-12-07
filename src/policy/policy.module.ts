@@ -2,11 +2,7 @@ import { Global, Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { PolicyController } from './controller/policy.controller';
 import { PolicyService } from './service/policy.service';
-import {
-  JobModule,
-  WebhookEvent,
-  WebhookEventSchema,
-} from '../_shared';
+import { JobModule, WebhookEvent, WebhookEventSchema } from '../_shared';
 import { ClientsModule } from '@nestjs/microservices';
 import { ConfigService } from '@nestjs/config';
 import { RabbitConfig } from '../../config/config';
