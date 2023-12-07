@@ -40,7 +40,6 @@ export class WebHookHandlerService {
   async createWebHook(jobData: any) {
     try {
       const { _id } = jobData;
-      console.log('_id ::: ', _id);
       const webhookEvent: WebhookEventDocument =
         await this.webhookEventModel.findOne({ _id });
       if (!webhookEvent) {
@@ -85,7 +84,6 @@ export class WebHookHandlerService {
 
   async processNotification(webHookData) {
     const { _id: webHookId } = webHookData;
-    console.log('webHookId :: ', webHookId);
     Logger.debug(`processing webhook notification for ${webHookId}`);
     let webhook: WebhookDocument = await this.webhookModel.findOne({
       _id: webHookId,
@@ -163,7 +161,7 @@ export class WebHookHandlerService {
 
             try {
               const resp = await lastValueFrom(
-                this.httpService.post(broker.webhookUrl, payloadToSend, {
+                this.httpService.post(broker.webhookUrl, payloadToSend.data, {
                   headers: headers,
                 }),
               );

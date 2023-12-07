@@ -19,16 +19,13 @@ export class PolicyService {
    * @return {Object}
    */
   public async push(obj) {
-    const webHookEvent = await this.webHookModel.create({
+    const webHookEvent: WebhookEventDocument = await this.webHookModel.create({
       event: WebHookEvents.PolicyUpdate,
       event_date: new Date(),
-      data: {
-        type: 'adjustment',
-        covers: obj.covers,
-      },
+      data: obj,
     });
     await this.workService.addJob(QueueTasks.POLICY_UPDATE, {
-      _id: webHookEvent.id,
+      _id: webHookEvent._id,
     });
     return { published: true };
   }

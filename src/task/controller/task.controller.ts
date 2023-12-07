@@ -29,10 +29,7 @@ export class TaskController {
       const webHookEvent = await this.webHookModel.create({
         event: WebHookEvents.PolicyUpdate,
         event_date: new Date(),
-        data: {
-          type: 'adjustment',
-          covers: payload.covers,
-        },
+        data: payload,
       });
       await this.workService.addJob(QueueTasks.POLICY_UPDATE, {
         _id: webHookEvent.id,

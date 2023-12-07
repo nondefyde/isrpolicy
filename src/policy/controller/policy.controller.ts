@@ -10,7 +10,6 @@ import {
 } from '@nestjs/common';
 import { PolicyService } from '../service/policy.service';
 import { NextFunction } from 'express';
-import { CreatePolicyDto } from '../../_shared/dto/policy';
 import { Utils } from '../../_shared';
 
 @Controller('policies')
@@ -20,7 +19,7 @@ export class PolicyController {
   @Post('/push')
   @HttpCode(HttpStatus.OK)
   public async push(
-    @Body() payload: CreatePolicyDto,
+    @Body() payload: any,
     @Res() res,
     @Req() req,
     @Next() next: NextFunction,
@@ -41,7 +40,7 @@ export class PolicyController {
   @Post('/update')
   @HttpCode(HttpStatus.OK)
   public async pushUpdate(
-    @Body() payload: CreatePolicyDto,
+    @Body() payload: any,
     @Res() res,
     @Req() req,
     @Next() next: NextFunction,
