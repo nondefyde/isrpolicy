@@ -20,7 +20,6 @@ export class BrokerService {
 
   async validateBeforeCreation(obj) {
     const broker = await this.model.findOne({ name: obj.name });
-    console.log('broker ::: ', broker);
     if (broker) {
       throw AppException.FORBIDDEN('Broker with name already exist');
     }

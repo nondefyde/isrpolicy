@@ -13,7 +13,7 @@ import {
 } from '@nestjs/common';
 import { BrokerService } from '../service/broker.service';
 import { NextFunction } from 'express';
-import { CreateBrokerDto, Pagination, QueryParser } from '../../_shared';
+import { CreateBrokerDto, Pagination, QueryParser, Utils } from '../../_shared';
 
 @Controller('brokers')
 export class BrokerController {
@@ -30,7 +30,7 @@ export class BrokerController {
     try {
       const queryParser = new QueryParser(Object.assign({}, req.query));
       const value = await this.service.createNewObject(payload);
-      const response = await this.service.getResponse({
+      const response = await Utils.getResponse({
         queryParser,
         value,
         code: HttpStatus.CREATED,
@@ -52,7 +52,8 @@ export class BrokerController {
       this.service.itemsPerPage,
     );
     try {
-      const { value, count } = await this.service.buildModelQueryObject(
+      const { value, count } = await Utils.buildModelQueryObject(
+        this.service.model,
         pagination,
         queryParser,
       );
@@ -80,7 +81,7 @@ export class BrokerController {
     try {
       const queryParser = new QueryParser(Object.assign({}, req.query));
       const object = await this.service.findObject(id);
-      const response = await this.service.getResponse({
+      const response = await Utils.getResponse({
         queryParser,
         code: HttpStatus.OK,
         value: object,
@@ -102,7 +103,7 @@ export class BrokerController {
     try {
       let object = await this.service.findObject(id);
       object = await this.service.deleteObject(object);
-      const response = await this.service.getResponse({
+      const response = await Utils.getResponse({
         code: HttpStatus.OK,
         value: { _id: object._id },
         message: 'Broker deleted',
