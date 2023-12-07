@@ -9,6 +9,7 @@ import { WorkerQueue } from '../config/bull.config';
 import { BullBoardModule } from '@nestql/bull-board';
 import { BrokerModule } from './broker';
 import { PolicyModule } from './policy';
+import { TaskModule } from './task/task.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { PolicyModule } from './policy';
     }),
     BrokerModule,
     PolicyModule,
+    TaskModule,
   ],
   controllers: [AppController],
   providers: [AppService],
