@@ -10,16 +10,12 @@ import {
 } from '@nestjs/common';
 import { PolicyService } from '../service/policy.service';
 import { NextFunction } from 'express';
-import { QueueService, Utils } from '../../_shared';
 import { CreatePolicyDto } from '../../_shared/dto/policy';
-import { QueueTasks } from '../../../config';
+import { Utils } from '../../_shared';
 
 @Controller('policies')
 export class PolicyController {
-  constructor(
-    protected service: PolicyService,
-    protected queueService: QueueService,
-  ) {}
+  constructor(protected service: PolicyService) {}
 
   @Post('/push')
   @HttpCode(HttpStatus.OK)
@@ -51,10 +47,7 @@ export class PolicyController {
     @Next() next: NextFunction,
   ) {
     try {
-      await this.queueService.addJobToQueue(
-        QueueTasks.PUSH_QUEUE_UPDATE,
-        payload,
-      );
+      await this.service.pushMessage(payload);
       const response = await Utils.getResponse({
         value: { success: true },
         code: HttpStatus.CREATED,

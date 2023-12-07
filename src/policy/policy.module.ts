@@ -4,7 +4,6 @@ import { PolicyController } from './controller/policy.controller';
 import { PolicyService } from './service/policy.service';
 import {
   JobModule,
-  QueueService,
   WebhookEvent,
   WebhookEventSchema,
 } from '../_shared';
@@ -28,7 +27,7 @@ import { RabbitConfig } from '../../config/config';
     ]),
   ],
   controllers: [PolicyController],
-  providers: [PolicyService, QueueService],
+  providers: [PolicyService],
   exports: [PolicyService],
 })
 export class PolicyModule {}

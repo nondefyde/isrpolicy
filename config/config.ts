@@ -5,7 +5,7 @@ export enum WorkerQueue {
 }
 
 export enum EventQueue {
-  EVENT_QUEUE = 'bikemo.events.queues',
+  EVENT_QUEUE = 'bikemo.events.queue',
 }
 
 export const RabbitConfig = (config): any => {
@@ -14,8 +14,8 @@ export const RabbitConfig = (config): any => {
     options: {
       urls: [config.get('rabbitMQ')],
       queue: EventQueue.EVENT_QUEUE,
-      queueOptions: { durable: true },
-      // noAck: true,
+      queueOptions: { durable: false },
+      noAck: true,
     },
   };
 };
