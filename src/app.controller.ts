@@ -22,7 +22,7 @@ import { Connection } from 'mongoose';
 import { RedisOptions, Transport } from '@nestjs/microservices';
 import * as crypto from 'crypto';
 import { NextFunction } from 'express';
-import { EventQueue } from '../config/config';
+import { EventQueue, RabbitConfig } from "../config/config";
 
 @Controller()
 export class AppController {
@@ -64,16 +64,7 @@ export class AppController {
           },
         }),
       () =>
-        this.service.pingCheck('rmq', {
-          transport: Transport.RMQ,
-          timeout: 10000,
-          options: {
-            urls: [this.config.get('app.rabbitMQ')],
-            queue: EventQueue.EVENT_QUEUE,
-            queueOptions: { durable: true },
-            noAck: true,
-          },
-        }),
+        this.service.pingCheck('rmq', RabbitConfig(this.config)),
     ]);
   }
 

@@ -1,6 +1,13 @@
 ## Description
 
-A service which consumes policy change events from a message queue / RESTful endpoint and enables them to be published as webhooks for brokers to consume
+A service which consumes policy change events from a message queue and enables them to be published as webhooks for brokers to consume
+
+
+Queue information
+- Queue name =  'bikemo.events.queue'
+- Event name = 'task.policy.push'
+- Endpoint to check health of app http:localhost:4000/v1/health
+
 
 ## Requirement
 
@@ -8,7 +15,8 @@ A service which consumes policy change events from a message queue / RESTful end
 - rabbitmq 
 - mongodb
 
-Sample - Environment variable
+### Environment variable example
+
 PORT=4000
 DB_URL=mongodb://localhost:27017/isrpolicy
 REDIS_URL=redis://127.0.0.1:6379
