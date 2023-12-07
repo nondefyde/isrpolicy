@@ -2,7 +2,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Queue } from 'bullmq';
 import { InjectQueue } from '@nestjs/bullmq';
-import { WorkerQueue } from '../../../config/bull.config';
+import { WorkerQueue } from '../../../config/config';
 
 @Injectable()
 export class WorkService {

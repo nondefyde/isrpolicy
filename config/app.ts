@@ -5,4 +5,5 @@ export const AppConfig = () => ({
   port: process.env.PORT,
   redisUrl: process.env.REDIS_URL,
   mongodbUrl: process.env.DB_URL,
+  rabbitMQ: process.env.RABBITMQ_URL,
 });

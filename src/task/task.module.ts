@@ -12,7 +12,7 @@ import {
   WebhookSchema,
 } from '../_shared';
 import { ApiProcessor } from './processors';
-import { WebHookHandlerService } from './services';
+import { TaskController, WebHookHandlerService } from './services';
 import { HttpModule } from '@nestjs/axios';
 
 @Module({
@@ -26,7 +26,7 @@ import { HttpModule } from '@nestjs/axios';
       { name: WebhookLog.name, schema: WebhookLogSchema },
     ]),
   ],
-  controllers: [],
+  controllers: [TaskController],
   providers: [ApiProcessor, WebHookHandlerService],
   exports: [],
 })

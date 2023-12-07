@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { BullModule } from '@nestjs/bullmq';
 import { ConfigService } from '@nestjs/config';
-import { WorkerQueue } from '../../config/bull.config';
+import { WorkerQueue } from '../../config/config';
 import { WorkService } from './service';
 
 const dependencies = [
@@ -10,7 +10,6 @@ const dependencies = [
     defaultJobOptions: {
       removeOnComplete: true,
       removeOnFail: 10,
-      attempts: 2,
     },
   }),
 ];

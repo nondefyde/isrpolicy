@@ -21,7 +21,9 @@ export class CronTask {
       status: WebhookStatus.Pending,
     });
     for (const webhook of webhooks) {
-      await this.workService.addJob(QueueTasks.PROCESS_WEBHOOK, { _id: webhook._id });
+      await this.workService.addJob(QueueTasks.PROCESS_WEBHOOK, {
+        _id: webhook._id,
+      });
     }
   }
 }

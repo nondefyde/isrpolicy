@@ -1,5 +1,5 @@
 import { OnWorkerEvent, Processor, WorkerHost } from '@nestjs/bullmq';
-import { WorkerQueue } from '../../../config/bull.config';
+import { WorkerQueue } from '../../../config/config';
 import { ConfigService } from '@nestjs/config';
 import { Logger } from '@nestjs/common';
 import { QueueTasks } from '../../../config';

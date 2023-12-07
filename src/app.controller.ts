@@ -22,12 +22,14 @@ import { Connection } from 'mongoose';
 import { RedisOptions, Transport } from '@nestjs/microservices';
 import * as crypto from 'crypto';
 import { NextFunction } from 'express';
+import { EventQueue } from '../config/config';
 
 @Controller()
 export class AppController {
   constructor(
     private health: HealthCheckService,
     private mongoService: MongooseHealthIndicator,
+    private service: MicroserviceHealthIndicator,
     private m_service: MicroserviceHealthIndicator,
     @InjectConnection()
     private readonly connection: Connection,
@@ -61,9 +63,21 @@ export class AppController {
             port: Number(redis.port),
           },
         }),
+      () =>
+        this.service.pingCheck('rmq', {
+          transport: Transport.RMQ,
+          timeout: 10000,
+          options: {
+            urls: [this.config.get('app.rabbitMQ')],
+            queue: EventQueue.EVENT_QUEUE,
+            queueOptions: { durable: true },
+            noAck: true,
+          },
+        }),
     ]);
   }
 
+  // Simulate broker webhook endpoint
   @Post('/brokers/:provider')
   @HttpCode(HttpStatus.OK)
   public async giro(@Res() res, @Req() req, @Next() next: NextFunction) {

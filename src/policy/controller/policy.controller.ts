@@ -10,12 +10,16 @@ import {
 } from '@nestjs/common';
 import { PolicyService } from '../service/policy.service';
 import { NextFunction } from 'express';
-import { QueryParser, Utils } from '../../_shared';
+import { QueueService, Utils } from '../../_shared';
 import { CreatePolicyDto } from '../../_shared/dto/policy';
+import { QueueTasks } from '../../../config';
 
 @Controller('policies')
 export class PolicyController {
-  constructor(protected service: PolicyService) {}
+  constructor(
+    protected service: PolicyService,
+    protected queueService: QueueService,
+  ) {}
 
   @Post('/push')
   @HttpCode(HttpStatus.OK)
@@ -26,13 +30,35 @@ export class PolicyController {
     @Next() next: NextFunction,
   ) {
     try {
-      const queryParser = new QueryParser(Object.assign({}, req.query));
       const value = await this.service.push(payload);
       const response = await Utils.getResponse({
-        queryParser,
         value,
         code: HttpStatus.CREATED,
         message: 'Policy published',
+      });
+      return res.status(HttpStatus.OK).json(response);
+    } catch (e) {
+      next(e);
+    }
+  }
+
+  @Post('/update')
+  @HttpCode(HttpStatus.OK)
+  public async pushUpdate(
+    @Body() payload: CreatePolicyDto,
+    @Res() res,
+    @Req() req,
+    @Next() next: NextFunction,
+  ) {
+    try {
+      await this.queueService.addJobToQueue(
+        QueueTasks.PUSH_QUEUE_UPDATE,
+        payload,
+      );
+      const response = await Utils.getResponse({
+        value: { success: true },
+        code: HttpStatus.CREATED,
+        message: 'Policy published via rabbitMQ',
       });
       return res.status(HttpStatus.OK).json(response);
     } catch (e) {
