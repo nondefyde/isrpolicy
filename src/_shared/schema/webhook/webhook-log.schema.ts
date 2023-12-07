@@ -12,9 +12,17 @@ export type WebhookLogDocument = WebhookLog & Document;
 export class WebhookLog {
   @Prop({
     type: MongooseSchema.Types.ObjectId,
-    ref: 'Webhook',
+    ref: 'Broker',
+    required: true,
   })
-  webhook: string;
+  broker: any;
+
+  @Prop({
+    type: MongooseSchema.Types.ObjectId,
+    ref: 'Webhook',
+    required: true,
+  })
+  webhook: any;
 
   @Prop({
     type: String,

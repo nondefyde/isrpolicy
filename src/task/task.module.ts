@@ -5,6 +5,8 @@ import {
   BrokerSchema,
   JobModule,
   Webhook,
+  WebhookEvent,
+  WebhookEventSchema,
   WebhookLog,
   WebhookLogSchema,
   WebhookSchema,
@@ -19,6 +21,7 @@ import { HttpModule } from '@nestjs/axios';
     JobModule,
     MongooseModule.forFeature([
       { name: Webhook.name, schema: WebhookSchema },
+      { name: WebhookEvent.name, schema: WebhookEventSchema },
       { name: Broker.name, schema: BrokerSchema },
       { name: WebhookLog.name, schema: WebhookLogSchema },
     ]),

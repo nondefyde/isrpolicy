@@ -20,7 +20,11 @@ export class ApiProcessor extends WorkerHost {
       Logger.debug(`${name} - process stated `);
       switch (job.name) {
         case QueueTasks.POLICY_UPDATE:
+          return this.webHookHandlerService.createWebHook(data);
+        case QueueTasks.DISPATCH_WEBHOOKS:
           return this.webHookHandlerService.disPatchWebHook(data);
+        case QueueTasks.PROCESS_WEBHOOK:
+          return this.webHookHandlerService.processNotification(data);
         default:
           throw 'No matching job';
       }

@@ -4,6 +4,8 @@ export enum WebHookEvents {
 
 export enum QueueTasks {
   POLICY_UPDATE = 'task.policy.update',
+  DISPATCH_WEBHOOKS = 'task.dispatch.webhook',
+  PROCESS_WEBHOOK = 'task.process.webhook',
 }
 
 export enum WebhookStatus {

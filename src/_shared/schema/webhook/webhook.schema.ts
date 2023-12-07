@@ -19,8 +19,9 @@ export class Webhook {
   broker: string;
 
   @Prop({
-    type: String,
+    type: MongooseSchema.Types.ObjectId,
     required: true,
+    ref: 'WebhookEvent',
   })
   reference: string;
 

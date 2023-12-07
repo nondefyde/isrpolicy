@@ -20,7 +20,7 @@ import {
 import { InjectConnection } from '@nestjs/mongoose';
 import { Connection } from 'mongoose';
 import { RedisOptions, Transport } from '@nestjs/microservices';
-import crypto from 'crypto';
+import * as crypto from 'crypto';
 import { NextFunction } from 'express';
 
 @Controller()
@@ -70,20 +70,12 @@ export class AppController {
     try {
       Logger.log(`<<< bikemo webhook arrived >>>`);
       const hash = crypto
-        .createHmac(
-          'sha512',
-          'test_sec_11da1f64a535dff4e98df12a-9dc9-4190-b2d6-1757192c3327',
-        )
+        .createHmac('sha512', 'business secret key goes here')
         .update(JSON.stringify(req.body))
         .digest('hex');
-      if (hash === req.headers['x-giro-signature']) {
-        const { event } = req.body;
-        Logger.log(`giro webhook event delivered ::: ${event}`);
-        return res.status(HttpStatus.OK).json({ ack: true, event });
-      }
-      return res
-        .status(HttpStatus.UNAUTHORIZED)
-        .json({ message: `Invalid data match from signature hash - ${hash}` });
+      const { event } = req.body;
+      console.log(`webhook event delivered ::: ${event}`, req.body);
+      return res.status(HttpStatus.OK).json({ ack: true, event });
     } catch (err) {
       return res
         .status(HttpStatus.BAD_REQUEST)
