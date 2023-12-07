@@ -1,4 +1,14 @@
-import { Controller, Get } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  HttpCode,
+  HttpStatus,
+  Logger,
+  Next,
+  Post,
+  Req,
+  Res,
+} from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import {
   HealthCheck,
@@ -10,6 +20,8 @@ import {
 import { InjectConnection } from '@nestjs/mongoose';
 import { Connection } from 'mongoose';
 import { RedisOptions, Transport } from '@nestjs/microservices';
+import crypto from 'crypto';
+import { NextFunction } from 'express';
 
 @Controller()
 export class AppController {
@@ -50,5 +62,32 @@ export class AppController {
           },
         }),
     ]);
+  }
+
+  @Post('/brokers/:provider')
+  @HttpCode(HttpStatus.OK)
+  public async giro(@Res() res, @Req() req, @Next() next: NextFunction) {
+    try {
+      Logger.log(`<<< bikemo webhook arrived >>>`);
+      const hash = crypto
+        .createHmac(
+          'sha512',
+          'test_sec_11da1f64a535dff4e98df12a-9dc9-4190-b2d6-1757192c3327',
+        )
+        .update(JSON.stringify(req.body))
+        .digest('hex');
+      if (hash === req.headers['x-giro-signature']) {
+        const { event } = req.body;
+        Logger.log(`giro webhook event delivered ::: ${event}`);
+        return res.status(HttpStatus.OK).json({ ack: true, event });
+      }
+      return res
+        .status(HttpStatus.UNAUTHORIZED)
+        .json({ message: `Invalid data match from signature hash - ${hash}` });
+    } catch (err) {
+      return res
+        .status(HttpStatus.BAD_REQUEST)
+        .json({ message: `Webhook Error: ${err.message}` });
+    }
   }
 }

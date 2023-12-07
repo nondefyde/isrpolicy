@@ -7,6 +7,7 @@ import { TerminusModule } from '@nestjs/terminus';
 import { DbModule, JobModule } from './_shared';
 import { WorkerQueue } from '../config/bull.config';
 import { BullBoardModule } from '@nestql/bull-board';
+import { BrokerModule } from './broker';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { BullBoardModule } from '@nestql/bull-board';
         add: Object.values(WorkerQueue),
       },
     }),
+    BrokerModule,
   ],
   controllers: [AppController],
   providers: [AppService],

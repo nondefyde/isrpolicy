@@ -2,6 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { AppModule } from './app.module';
+import { ResponseFilter, ValidationPipe } from './_shared';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
@@ -9,6 +10,8 @@ async function bootstrap() {
     bodyParser: true,
   });
   app.setGlobalPrefix('v1');
+  app.useGlobalFilters(new ResponseFilter());
+  app.useGlobalPipes(new ValidationPipe());
 
   const config = app.get(ConfigService);
 
