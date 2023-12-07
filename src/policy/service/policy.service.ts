@@ -1,12 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import {
-  AppException,
-  Policy,
-  PolicyDocument,
-  Utils,
-} from '../../_shared';
+import { AppException, Policy, PolicyDocument } from '../../_shared';
 
 @Injectable()
 export class PolicyService {
@@ -17,7 +12,7 @@ export class PolicyService {
   async validateBeforeCreation(obj) {
     const broker = await this.model.findOne({ name: obj.name });
     if (broker) {
-      throw AppException.FORBIDDEN('Broker with name already exist');
+      throw AppException.FORBIDDEN('Policy with name already exist');
     }
   }
 
@@ -29,9 +24,22 @@ export class PolicyService {
     await this.validateBeforeCreation(obj);
     const data = new this.model({
       ...obj,
-      publicKey: Utils.generateAppKey('pub_'),
-      secretKey: Utils.generateAppKey('sec_'),
     });
     return data.save();
+  }
+
+  public async updateObject(id, obj) {
+    try {
+      const policyUpdated = await this.model.findOneAndUpdate(
+        { _id: id },
+        {
+          ...obj,
+        },
+        { new: true },
+      );
+      return policyUpdated;
+    } catch (error) {
+      return false;
+    }
   }
 }

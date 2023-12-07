@@ -22,8 +22,19 @@ export class Policy {
   @Prop({ type: String })
   description: string;
 
-  @Prop({ type: Number, required: true })
-  cost: number;
+  @Prop({
+    type: {
+      bikes_count: {
+        type: Number,
+        required: true,
+      },
+      bike_value: {
+        type: Number,
+        required: true,
+      },
+    },
+  })
+  covers: any;
 }
 const PolicySchema = SchemaFactory.createForClass(Policy);
 

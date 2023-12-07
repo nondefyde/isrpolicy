@@ -80,7 +80,7 @@ export class BrokerController {
   ) {
     try {
       const queryParser = new QueryParser(Object.assign({}, req.query));
-      const object = await this.service.findObject(id);
+      const object = await Utils.findObject(this.service.model, id);
       const response = await Utils.getResponse({
         queryParser,
         code: HttpStatus.OK,
@@ -101,7 +101,7 @@ export class BrokerController {
     @Next() next: NextFunction,
   ) {
     try {
-      let object = await this.service.findObject(id);
+      let object = await Utils.findObject(this.service.model, id);
       object = await this.service.deleteObject(object);
       const response = await Utils.getResponse({
         code: HttpStatus.OK,

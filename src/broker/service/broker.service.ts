@@ -38,19 +38,6 @@ export class BrokerService {
     });
     return data.save();
   }
-
-  public async findObject(id) {
-    try {
-      const object = await this.model.findOne({ _id: id });
-      if (!object) {
-        throw AppException.NOT_FOUND('Data not found');
-      }
-      return object;
-    } catch (error) {
-      throw error;
-    }
-  }
-
   /**
    * @param {Object} object The payload object
    * @return {Object}

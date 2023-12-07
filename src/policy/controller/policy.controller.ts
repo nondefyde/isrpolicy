@@ -5,13 +5,21 @@ import {
   HttpCode,
   HttpStatus,
   Next,
+  Param,
   Post,
+  Put,
   Req,
   Res,
 } from '@nestjs/common';
 import { PolicyService } from '../service/policy.service';
 import { NextFunction } from 'express';
-import { CreatePolicyDto, Pagination, QueryParser, Utils } from '../../_shared';
+import {
+  AppException,
+  CreatePolicyDto,
+  Pagination,
+  QueryParser,
+  Utils,
+} from '../../_shared';
 
 @Controller('policies')
 export class PolicyController {
@@ -61,6 +69,34 @@ export class PolicyController {
         count,
         queryParser,
         pagination,
+      });
+      return res.status(HttpStatus.OK).json(response);
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  @Put('/:id')
+  @HttpCode(HttpStatus.OK)
+  public async update(
+    @Param('id') id: string,
+    @Body() payload: any,
+    @Req() req,
+    @Res() res,
+    @Next() next: NextFunction,
+  ) {
+    try {
+      const queryParser = new QueryParser(Object.assign({}, req.query));
+      let object = await Utils.findObject(this.service.model, id);
+      if (!object) {
+        throw AppException.NOT_FOUND('Data not found');
+      }
+      object = await this.service.updateObject(id, payload);
+      const response = await Utils.getResponse({
+        queryParser,
+        code: HttpStatus.OK,
+        value: object,
+        message: 'Policy updated',
       });
       return res.status(HttpStatus.OK).json(response);
     } catch (err) {

@@ -1,6 +1,6 @@
 import { randomBytes } from 'crypto';
 import { v4 as uuidv4 } from 'uuid';
-import { AppResponse, Pagination, QueryParser, ResponseOption } from "./common";
+import { AppException, AppResponse, Pagination, QueryParser, ResponseOption } from "./common";
 
 export class Utils {
   static isValidURL = (str) => {
@@ -63,5 +63,17 @@ export class Utils {
       value: await query.select(queryParser.selection).exec(),
       count: await model.countDocuments(queryParser.query).exec(),
     };
+  }
+
+  public static async findObject(model, id) {
+    try {
+      const object = await model.findOne({ _id: id });
+      if (!object) {
+        throw AppException.NOT_FOUND('Data not found');
+      }
+      return object;
+    } catch (error) {
+      throw error;
+    }
   }
 }

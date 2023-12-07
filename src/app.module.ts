@@ -8,7 +8,7 @@ import { DbModule, JobModule } from './_shared';
 import { WorkerQueue } from '../config/bull.config';
 import { BullBoardModule } from '@nestql/bull-board';
 import { BrokerModule } from './broker';
-import { PolicyModule } from "./policy";
+import { PolicyModule } from './policy';
 
 @Module({
   imports: [
@@ -27,7 +27,7 @@ import { PolicyModule } from "./policy";
       },
     }),
     BrokerModule,
-    PolicyModule
+    PolicyModule,
   ],
   controllers: [AppController],
   providers: [AppService],
