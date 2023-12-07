@@ -1,7 +1,11 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 
-export type PolicyDocument = Policy & Document;
+export type PolicyDocument = Policy &
+  Document & {
+    createdAt: string;
+    updatedAt: string;
+  };
 @Schema({
   timestamps: true,
   autoCreate: true,

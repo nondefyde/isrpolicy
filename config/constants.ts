@@ -1,5 +1,9 @@
 export enum WebHookEvents {
-  AccountCredit = 'wallet.account.credit',
+  PolicyUpdate = 'policy.updated',
+}
+
+export enum QueueTasks {
+  POLICY_UPDATE = 'task.policy.update',
 }
 
 export enum WebhookStatus {
